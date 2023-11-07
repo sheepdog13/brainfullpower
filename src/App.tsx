@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
+import CreateNickname from "./pages/CreateNickname";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400&display=swap');
@@ -94,6 +95,7 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/nick" element={<CreateNickname />} />
       </Routes>
     </>
   );
