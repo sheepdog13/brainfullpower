@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import CreateNickname from "./pages/CreateNickname";
+import Problem from "./pages/Problem";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400&display=swap');
@@ -96,6 +97,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/nick" element={<CreateNickname />} />
+        <Route path="/problem" element={<Problem />} />
       </Routes>
     </>
   );

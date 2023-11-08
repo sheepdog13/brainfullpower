@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ReactComponent as Brain } from "../images/brain.svg";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;

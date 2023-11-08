@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ReactComponent as Brain } from "../images/brain.svg";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 interface INickname {
   nickname: string;
@@ -108,6 +109,7 @@ const Btn = styled.button`
 `;
 
 function CreateNickname() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -117,6 +119,7 @@ function CreateNickname() {
   const onSubmit = (data: any) => {
     console.log(data);
     setValue("nickname", "");
+    navigate("/problem");
   };
   return (
     <Wrapper>
