@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { ReactComponent as Brain } from "../images/brain.svg";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import SvgIcon from "@mui/material/SvgIcon";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -67,6 +71,22 @@ const Circle = styled.div`
   border: 2px solid #212529;
 `;
 
+const FolderSvgBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin: 10px;
+  z-index: 1;
+`;
+
+const Rectagle = styled.div`
+  width: 217px;
+  height: 20px;
+  border-radius: 999px;
+  border: 2px solid #212529;
+`;
+
 const ContextBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -109,7 +129,10 @@ const Input = styled.input`
   border: 2px solid ${(props) => props.color};
   outline-color: ${(props) => props.color};
   font-size: 16px;
+  font-weight: bold;
+  color: #212529;
   &::placeholder {
+    font-weight: normal;
     color: #9199a1;
   }
 `;
@@ -173,6 +196,12 @@ function CreateNickname() {
           </CircleBox>
         </UnionTop>
         <UnionRight />
+        <FolderSvgBox>
+          <SvgIcon component={ArrowLeftIcon} sx={{ fontSize: 24 }} />
+          <SvgIcon component={ArrowRightIcon} sx={{ fontSize: 24 }} />
+          <SvgIcon component={RefreshIcon} sx={{ fontSize: 18 }} />
+          <Rectagle />
+        </FolderSvgBox>
       </Union>
       <ContextBox>
         <BrainBox>
