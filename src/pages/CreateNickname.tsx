@@ -3,10 +3,6 @@ import { ReactComponent as Brain } from "../images/brain.svg";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-interface INickname {
-  nickname: string;
-}
-
 const Wrapper = styled.div`
   width: 100%;
   height: 814px;
@@ -15,14 +11,60 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Union = styled.div`
+const UnionTop = styled.div`
+  position: absolute;
+  top: -30px;
+  left: -2px;
   display: flex;
+  width: 62px;
+  height: 52px;
+  border-top-left-radius: 12px;
+  border: 2px solid #212529;
+  border-bottom: none;
+  border-right: none;
+  background-color: #ffd752;
+`;
+
+const UnionRight = styled.div`
+  position: absolute;
+  top: -30px;
+  left: 40px;
+  width: 50px;
+  height: 30px;
+  border-top-right-radius: 50px;
+  background-color: #ffd752;
+  border: 2px solid #212529;
+  border-left: none;
+  border-bottom: none;
+`;
+
+const Union = styled.div`
+  position: relative;
   margin-top: 194px;
+  display: flex;
   width: 335px;
-  height: 64px;
+  height: 44px;
   background-color: #ffd752;
   border: 2px solid #212529;
   margin-bottom: -2px;
+  border-top-right-radius: 12px;
+`;
+
+const CircleBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 11px;
+  margin-left: 18px;
+  z-index: 1;
+`;
+
+const Circle = styled.div`
+  width: 10px;
+  height: 10px;
+  background-color: ${(props) => props.color};
+  border-radius: 50%;
+  border: 2px solid #212529;
 `;
 
 const ContextBox = styled.div`
@@ -33,8 +75,6 @@ const ContextBox = styled.div`
   height: 300px;
   background-color: #ffd752;
   border: 2px solid #212529;
-  border-bottom-right-radius: 12px;
-  border-bottom-left-radius: 12px;
 `;
 
 const BrainBox = styled.div`
@@ -66,7 +106,8 @@ const Input = styled.input`
   width: 275px;
   height: 48px;
   border-radius: 8px;
-  border: 2px solid #212529;
+  border: 2px solid ${(props) => props.color};
+  outline-color: ${(props) => props.color};
   font-size: 16px;
   &::placeholder {
     color: #9199a1;
@@ -89,7 +130,7 @@ const Btn = styled.button`
   position: relative;
   width: 335px;
   height: 74px;
-  margin-top: 127px;
+  margin-top: 99px;
   border-radius: 12px;
   background-color: #4757ff;
   border: solid 2px #212529;
@@ -123,7 +164,16 @@ function CreateNickname() {
   };
   return (
     <Wrapper>
-      <Union></Union>
+      <Union>
+        <UnionTop>
+          <CircleBox>
+            <Circle color="#FF5F57" />
+            <Circle color="#FFD752" />
+            <Circle color="#09E37A" />
+          </CircleBox>
+        </UnionTop>
+        <UnionRight />
+      </Union>
       <ContextBox>
         <BrainBox>
           <SvgBox>
@@ -131,11 +181,9 @@ function CreateNickname() {
           </SvgBox>
         </BrainBox>
         <NickNameDesc>닉네임을 입력해주세요!</NickNameDesc>
-        {errors?.nickname && (
-          <ErrorSpan>2글자 ~ 6글자 사이로 만들어주세요</ErrorSpan>
-        )}
         <form id="nickname" onSubmit={handleSubmit(onSubmit)}>
           <Input
+            color={errors.nickname ? "#FF5F57" : "#212529"}
             placeholder="닉네임(2글자 ~ 6글자)"
             {...register("nickname", {
               required: true,
@@ -144,6 +192,9 @@ function CreateNickname() {
             })}
           ></Input>
         </form>
+        {errors?.nickname && (
+          <ErrorSpan>2글자 ~ 6글자 사이로 만들어주세요</ErrorSpan>
+        )}
         <PrivacyNotice>개인정보 보호를 위해 실명은 NO!</PrivacyNotice>
       </ContextBox>
       <Btn type="submit" form="nickname">

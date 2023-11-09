@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
+import { useEffect, useState } from "react";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -117,11 +118,34 @@ const Btn = styled.button`
 `;
 
 function Problem() {
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (minutes === 60) return minutes;
+      if (seconds === 59) {
+        setMinutes((prevMinutes) => prevMinutes + 1);
+        setSeconds(0);
+      } else {
+        setSeconds((prevSeconds) => prevSeconds + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [seconds]);
+
+  const formatTime = (time: number) => (time < 10 ? `0${time}` : time);
+
+  const BtnClickHandler = () => {};
+
   return (
     <Wrapper>
       <TimeBox>
         <SvgIcon component={TimerIcon} sx={{ fontSize: 20 }} />
-        <TimerNum>00:00</TimerNum>
+        <TimerNum>
+          {formatTime(minutes)}:{formatTime(seconds)}
+        </TimerNum>
       </TimeBox>
       <LevelNav>
         <LevelToggles>
@@ -136,18 +160,18 @@ function Problem() {
         <div></div>
       </ContentBox>
       <BtnBox>
-        <Btn>
+        <Btn onClick={BtnClickHandler}>
           1<div></div>
         </Btn>
-        <Btn>
+        <Btn onClick={BtnClickHandler}>
           2<div></div>
         </Btn>
       </BtnBox>
       <BtnBox>
-        <Btn>
+        <Btn onClick={BtnClickHandler}>
           3<div></div>
         </Btn>
-        <Btn>
+        <Btn onClick={BtnClickHandler}>
           4<div></div>
         </Btn>
       </BtnBox>
