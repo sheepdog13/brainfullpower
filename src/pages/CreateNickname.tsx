@@ -6,6 +6,8 @@ import SvgIcon from "@mui/material/SvgIcon";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { useMutation } from "react-query";
+import axios from "axios";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -173,6 +175,36 @@ const Btn = styled.button`
 `;
 
 function CreateNickname() {
+  async function postData(data: any) {
+    try {
+      //응답 성공
+      const response = await axios.post("/v1/api/members", data);
+      console.log(response);
+    } catch (error) {
+      //응답 실패
+      console.error(error);
+    }
+  }
+  // const postUserData = async (data: any) => {
+  //   const response = await fetch("https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app/v1/api/members"
+  //     ,
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(data),
+  //     }
+  //   );
+
+  //   if (!response.ok) {
+  //     console.log("안들어가짐");
+  //   }
+
+  //   return response.json();
+  // };
+  // const mutation = useMutation(postUserData);
+
   const navigate = useNavigate();
   const {
     register,
@@ -181,10 +213,14 @@ function CreateNickname() {
     setValue,
   } = useForm();
   const onSubmit = (data: any) => {
-    console.log(data);
-    setValue("nickname", "");
-    navigate("/problem");
+    const user = { id: 0, ...data };
+    console.log(user);
+    postData(user);
+    // mutation.mutate(user);
+    setValue("name", "");
+    navigate("/problem/1");
   };
+
   return (
     <Wrapper>
       <Union>
@@ -210,11 +246,11 @@ function CreateNickname() {
           </SvgBox>
         </BrainBox>
         <NickNameDesc>닉네임을 입력해주세요!</NickNameDesc>
-        <form id="nickname" onSubmit={handleSubmit(onSubmit)}>
+        <form id="name" onSubmit={handleSubmit(onSubmit)}>
           <Input
             color={errors.nickname ? "#FF5F57" : "#212529"}
             placeholder="닉네임(2글자 ~ 6글자)"
-            {...register("nickname", {
+            {...register("name", {
               required: true,
               maxLength: 6,
               minLength: 2,
@@ -226,7 +262,7 @@ function CreateNickname() {
         )}
         <PrivacyNotice>개인정보 보호를 위해 실명은 NO!</PrivacyNotice>
       </ContextBox>
-      <Btn type="submit" form="nickname">
+      <Btn type="submit" form="name">
         다음<div></div>
       </Btn>
     </Wrapper>

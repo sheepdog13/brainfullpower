@@ -2,6 +2,7 @@ import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -44,26 +45,22 @@ const LevelToggles = styled.ul`
   margin-top: 13px;
 `;
 
-const LevelToggle = styled.li`
+const LevelToggle = styled.li<{ isActive: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 56px;
   height: 26px;
-  background-color: #c1c6cc;
+  background-color: ${(props) => (props.isActive ? "#fff" : "#c1c6cc")};
   border-radius: 12px 12px 0 0;
   border-width: 2px;
   border-style: solid;
   border-color: #212529;
-  color: #495057;
+  color: ${(props) => (props.isActive ? "#4757ff" : "#495057")};
   font-size: 14px;
   margin-left: -2px;
-  &:first-child {
-    background-color: #fff;
-    border-bottom: none;
-    font-weight: bold;
-    color: #4757ff;
-  }
+  border-bottom: ${(props) => props.isActive && "none"};
+  font-weight: ${(props) => props.isActive && "bold"};
 `;
 
 const ContentBox = styled.div`
@@ -74,17 +71,6 @@ const ContentBox = styled.div`
   background-color: #fff;
   border: 2px solid #212529;
   border-top: none;
-  border-radius: 0 0 12px 12px;
-  div {
-    position: absolute;
-    top: 8px;
-    left: -2px;
-    z-index: -1;
-    border-radius: 12px;
-    width: 335px;
-    height: 340px;
-    background-color: #212529;
-  }
 `;
 
 const BtnBox = styled.div`
@@ -118,8 +104,10 @@ const Btn = styled.button`
 `;
 
 function Problem() {
+  const { id } = useParams();
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -137,7 +125,13 @@ function Problem() {
 
   const formatTime = (time: number) => (time < 10 ? `0${time}` : time);
 
-  const BtnClickHandler = () => {};
+  const BtnClickHandler = () => {
+    if (Number(id) < 5) {
+      navigate(`/problem/${Number(id) + 1}`);
+    } else if (id === "5") {
+      navigate("/result");
+    }
+  };
 
   return (
     <Wrapper>
@@ -149,16 +143,14 @@ function Problem() {
       </TimeBox>
       <LevelNav>
         <LevelToggles>
-          <LevelToggle>Lv.1</LevelToggle>
-          <LevelToggle>Lv.2</LevelToggle>
-          <LevelToggle>Lv.3</LevelToggle>
-          <LevelToggle>Lv.4</LevelToggle>
-          <LevelToggle>Lv.5</LevelToggle>
+          <LevelToggle isActive={id === "1" ? true : false}>Lv.1</LevelToggle>
+          <LevelToggle isActive={id === "2" ? true : false}>Lv.2</LevelToggle>
+          <LevelToggle isActive={id === "3" ? true : false}>Lv.3</LevelToggle>
+          <LevelToggle isActive={id === "4" ? true : false}>Lv.4</LevelToggle>
+          <LevelToggle isActive={id === "5" ? true : false}>Lv.5</LevelToggle>
         </LevelToggles>
       </LevelNav>
-      <ContentBox>
-        <div></div>
-      </ContentBox>
+      <ContentBox></ContentBox>
       <BtnBox>
         <Btn onClick={BtnClickHandler}>
           1<div></div>

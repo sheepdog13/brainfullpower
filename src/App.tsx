@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import CreateNickname from "./pages/CreateNickname";
 import Problem from "./pages/Problem";
+import Result from "./pages/Result";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400&display=swap');
@@ -74,14 +75,15 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     font-family:'NanumSquareNeo-Variable', 'Noto Sans', sans-serif;
+    color: #212529;
     background-color: #12E382;
-  background-image:
+    background-image:
     linear-gradient(rgba(82, 82, 255, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(82, 82, 255, 0.1)  1px, transparent 1px),
     linear-gradient(rgba(82, 82, 255, 0.1)  1px, transparent 1px),
     linear-gradient(90deg, rgba(82, 82, 255, 0.1)  1px, transparent 1px);
-  background-size: 20px 20px, 20px 20px, 20px 20px, 20px 20px; 
-  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+    background-size: 20px 20px, 20px 20px, 20px 20px, 20px 20px; 
+    background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
     }
   a {
     text-decoration: none;
@@ -97,7 +99,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/nick" element={<CreateNickname />} />
-        <Route path="/problem" element={<Problem />} />
+        <Route path="/problem/:id" element={<Problem />} />
+        <Route path="/result" element={<Result />} />
       </Routes>
     </>
   );
