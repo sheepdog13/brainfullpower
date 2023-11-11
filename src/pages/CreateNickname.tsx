@@ -213,11 +213,11 @@ function CreateNickname() {
     setValue,
   } = useForm();
   const onSubmit = (data: any) => {
-    const user = { id: 0, ...data };
+    const user = { ...data };
     console.log(user);
     postData(user);
     // mutation.mutate(user);
-    setValue("name", "");
+    setValue("memberName", "");
     navigate("/problem/1");
   };
 
@@ -246,11 +246,11 @@ function CreateNickname() {
           </SvgBox>
         </BrainBox>
         <NickNameDesc>닉네임을 입력해주세요!</NickNameDesc>
-        <form id="name" onSubmit={handleSubmit(onSubmit)}>
+        <form id="memberName" onSubmit={handleSubmit(onSubmit)}>
           <Input
             color={errors.nickname ? "#FF5F57" : "#212529"}
             placeholder="닉네임(2글자 ~ 6글자)"
-            {...register("name", {
+            {...register("memberName", {
               required: true,
               maxLength: 6,
               minLength: 2,
@@ -262,7 +262,7 @@ function CreateNickname() {
         )}
         <PrivacyNotice>개인정보 보호를 위해 실명은 NO!</PrivacyNotice>
       </ContextBox>
-      <Btn type="submit" form="name">
+      <Btn type="submit" form="memberName">
         다음<div></div>
       </Btn>
     </Wrapper>

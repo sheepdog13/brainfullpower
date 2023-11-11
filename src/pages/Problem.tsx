@@ -3,6 +3,25 @@ import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { useRecoilState } from "recoil";
+import { scoreAtom } from "../atoms";
+import { couldStartTrivia } from "typescript";
+
+interface IProblem {
+  answerDetail: string;
+  answerSummary: string;
+  choice1: string;
+  choice2: string;
+  choice3: string;
+  choice4: string;
+  levelId: number;
+  point: number;
+  problem: string;
+  problemId: number;
+  problemPicture: null;
+  problemType: number;
+}
 
 const Wrapper = styled.div`
   width: 100%;
@@ -65,12 +84,18 @@ const LevelToggle = styled.li<{ isActive: boolean }>`
 
 const ContentBox = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 335px;
   height: 340px;
   margin-bottom: 38px;
+  padding: 20px;
   background-color: #fff;
   border: 2px solid #212529;
   border-top: none;
+  font-size: 14px;
+  line-height: 155%;
 `;
 
 const BtnBox = styled.div`
@@ -108,7 +133,16 @@ function Problem() {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const navigate = useNavigate();
-
+  const [score, setScore] = useRecoilState(scoreAtom);
+  const { data, isLoading } = useQuery<IProblem>(["problem", id], async () => {
+    const response = await fetch(`/v1/api/problems/${id}`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    console.log(data);
+    return data;
+  });
   useEffect(() => {
     const interval = setInterval(() => {
       if (minutes === 60) return minutes;
@@ -125,7 +159,7 @@ function Problem() {
 
   const formatTime = (time: number) => (time < 10 ? `0${time}` : time);
 
-  const BtnClickHandler = () => {
+  const navigateHandler = () => {
     if (Number(id) < 5) {
       navigate(`/problem/${Number(id) + 1}`);
     } else if (id === "5") {
@@ -133,41 +167,79 @@ function Problem() {
     }
   };
 
+  const isCorrect = (chose: string) => {
+    if (chose === data?.answerSummary) {
+      setScore(score + Number(id));
+    } else {
+      return score;
+    }
+  };
+
+  const BtnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(e.currentTarget.value);
+    isCorrect(e.currentTarget.value);
+    navigateHandler();
+  };
+
   return (
-    <Wrapper>
-      <TimeBox>
-        <SvgIcon component={TimerIcon} sx={{ fontSize: 20 }} />
-        <TimerNum>
-          {formatTime(minutes)}:{formatTime(seconds)}
-        </TimerNum>
-      </TimeBox>
-      <LevelNav>
-        <LevelToggles>
-          <LevelToggle isActive={id === "1" ? true : false}>Lv.1</LevelToggle>
-          <LevelToggle isActive={id === "2" ? true : false}>Lv.2</LevelToggle>
-          <LevelToggle isActive={id === "3" ? true : false}>Lv.3</LevelToggle>
-          <LevelToggle isActive={id === "4" ? true : false}>Lv.4</LevelToggle>
-          <LevelToggle isActive={id === "5" ? true : false}>Lv.5</LevelToggle>
-        </LevelToggles>
-      </LevelNav>
-      <ContentBox></ContentBox>
-      <BtnBox>
-        <Btn onClick={BtnClickHandler}>
-          1<div></div>
-        </Btn>
-        <Btn onClick={BtnClickHandler}>
-          2<div></div>
-        </Btn>
-      </BtnBox>
-      <BtnBox>
-        <Btn onClick={BtnClickHandler}>
-          3<div></div>
-        </Btn>
-        <Btn onClick={BtnClickHandler}>
-          4<div></div>
-        </Btn>
-      </BtnBox>
-    </Wrapper>
+    <>
+      {isLoading ? (
+        <Wrapper>loading중</Wrapper>
+      ) : (
+        <>
+          <Wrapper>
+            <TimeBox>
+              <SvgIcon component={TimerIcon} sx={{ fontSize: 20 }} />
+              <TimerNum>
+                {formatTime(minutes)}:{formatTime(seconds)}
+              </TimerNum>
+            </TimeBox>
+            <LevelNav>
+              <LevelToggles>
+                <LevelToggle isActive={id === "1" ? true : false}>
+                  Lv.1
+                </LevelToggle>
+                <LevelToggle isActive={id === "2" ? true : false}>
+                  Lv.2
+                </LevelToggle>
+                <LevelToggle isActive={id === "3" ? true : false}>
+                  Lv.3
+                </LevelToggle>
+                <LevelToggle isActive={id === "4" ? true : false}>
+                  Lv.4
+                </LevelToggle>
+                <LevelToggle isActive={id === "5" ? true : false}>
+                  Lv.5
+                </LevelToggle>
+              </LevelToggles>
+            </LevelNav>
+            <ContentBox>
+              <div>{data?.problem}</div>
+            </ContentBox>
+            <BtnBox>
+              <Btn value={data?.choice1} onClick={BtnClickHandler}>
+                {data?.choice1}
+                <div></div>
+              </Btn>
+              <Btn value={data?.choice2} onClick={BtnClickHandler}>
+                {data?.choice2}
+                <div></div>
+              </Btn>
+            </BtnBox>
+            <BtnBox>
+              <Btn value={data?.choice3} onClick={BtnClickHandler}>
+                {data?.choice3}
+                <div></div>
+              </Btn>
+              <Btn value={data?.choice4} onClick={BtnClickHandler}>
+                {data?.choice4}
+                <div></div>
+              </Btn>
+            </BtnBox>
+          </Wrapper>
+        </>
+      )}
+    </>
   );
 }
 

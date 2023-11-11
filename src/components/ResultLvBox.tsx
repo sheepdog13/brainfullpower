@@ -100,6 +100,7 @@ const LvBotBox = styled.div`
     font-weight: bold;
   }
 `;
+
 function ResultLvBox() {
   return (
     <>
