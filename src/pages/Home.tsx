@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ReactComponent as Brain } from "../images/brain.svg";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -81,6 +82,15 @@ const Btn = styled.button`
 `;
 
 function Home() {
+  const { data, isLoading } = useQuery(["admin"], async () => {
+    const response = await fetch("/v1/api/admin/problems");
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    console.log(data);
+    return data;
+  });
   const navigate = useNavigate();
   function handleClick() {
     navigate("/nick");
