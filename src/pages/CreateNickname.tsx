@@ -178,9 +178,13 @@ function CreateNickname() {
   async function postData(data: any) {
     try {
       //응답 성공
-      const response = await axios.post(`/v1/api/members`, data, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app/v1/api/members`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
       console.log(response);
     } catch (error) {
       //응답 실패
