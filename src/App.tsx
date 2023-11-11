@@ -97,7 +97,7 @@ function App() {
     <>
       <GlobalStyle />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/potenday" element={<Home />} />
         <Route path="/nick" element={<CreateNickname />} />
         <Route path="/problem/:id" element={<Problem />} />
         <Route path="/result" element={<Result />} />
