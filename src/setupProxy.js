@@ -4,8 +4,8 @@ module.exports = function (app) {
   app.use(
     "/v1",
     createProxyMiddleware({
-      target:
-        "https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app",
+      target: `${process.env.REACT_APP_API_URL}`,
+      withCredentials: true,
       changeOrigin: true,
     })
   );
