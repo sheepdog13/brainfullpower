@@ -4,8 +4,7 @@ module.exports = function (app) {
   app.use(
     "/v1",
     createProxyMiddleware({
-      target:
-        "https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app",
+      target: "http://localhost:8080",
       withCredentials: true,
       changeOrigin: true,
     })

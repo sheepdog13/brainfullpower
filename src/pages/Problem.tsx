@@ -135,7 +135,9 @@ function Problem() {
   const navigate = useNavigate();
   const [score, setScore] = useRecoilState(scoreAtom);
   const { data, isLoading } = useQuery<IProblem>(["problem", id], async () => {
-    const response = await fetch(`/v1/api/problems/${id}`);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/v1/api/problems/${id}`
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -143,6 +145,7 @@ function Problem() {
     console.log(data);
     return data;
   });
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (minutes === 60) return minutes;

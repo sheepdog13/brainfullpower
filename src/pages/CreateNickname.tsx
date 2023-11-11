@@ -178,7 +178,13 @@ function CreateNickname() {
   async function postData(data: any) {
     try {
       //응답 성공
-      const response = await axios.post("/v1/api/members", data);
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/v1/api/members`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
       console.log(response);
     } catch (error) {
       //응답 실패

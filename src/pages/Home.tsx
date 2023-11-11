@@ -83,7 +83,9 @@ const Btn = styled.button`
 
 function Home() {
   const { data, isLoading } = useQuery(["admin"], async () => {
-    const response = await fetch("/v1/api/admin/problems");
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/v1/api/admin/problems`
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
