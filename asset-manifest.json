@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/potenday/static/css/main.f855e6bc.css",
-    "main.js": "/potenday/static/js/main.4a8976f4.js",
+    "main.js": "/potenday/static/js/main.a8534a6e.js",
     "static/js/787.408b0e61.chunk.js": "/potenday/static/js/787.408b0e61.chunk.js",
     "static/media/brain.svg": "/potenday/static/media/brain.2ed92acde86553436a0be9fb813c802b.svg",
     "index.html": "/potenday/index.html",
     "main.f855e6bc.css.map": "/potenday/static/css/main.f855e6bc.css.map",
-    "main.4a8976f4.js.map": "/potenday/static/js/main.4a8976f4.js.map",
+    "main.a8534a6e.js.map": "/potenday/static/js/main.a8534a6e.js.map",
     "787.408b0e61.chunk.js.map": "/potenday/static/js/787.408b0e61.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.4a8976f4.js"
+    "static/js/main.a8534a6e.js"
   ]
 }
