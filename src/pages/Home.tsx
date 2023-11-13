@@ -82,17 +82,6 @@ const Btn = styled.button`
 `;
 
 function Home() {
-  const { data, isLoading } = useQuery(["admin"], async () => {
-    const response = await fetch(
-      `https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app/v1/api/admin/problems`
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    console.log(data);
-    return data;
-  });
   const navigate = useNavigate();
   function handleClick() {
     navigate("/nick");

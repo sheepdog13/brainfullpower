@@ -1,5 +1,5 @@
 {
-  "name": "potenday",
+  "name": "brainfullpower",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -55,6 +55,5 @@
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.29"
-  },
-  "proxy": "https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app/"
+  }
 }

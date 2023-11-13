@@ -6,12 +6,12 @@ import SvgIcon from "@mui/material/SvgIcon";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const Wrapper = styled.div`
+  background-color: #4757ff;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 1758px;
-  background-color: #4757ff;
+  height: 1380px;
 `;
 
 const BrainBox = styled.div`
@@ -114,6 +114,33 @@ const ProblemResultColor = styled.div<{ isOk: boolean }>`
   }
 `;
 
+const Btn = styled.button`
+  position: relative;
+  width: 335px;
+  height: 82px;
+  border-radius: 12px;
+  margin-top: 36px;
+  color: ${(props) => props.color};
+  background-color: #fff;
+  border: solid 2px #212529;
+  font-size: 32px;
+  font-weight: bold;
+  border-bottom: 8px solid #212529;
+`;
+const Btn1 = styled.button`
+  position: relative;
+  width: 335px;
+  height: 82px;
+  border-radius: 12px;
+  margin-top: 36px;
+  color: ${(props) => props.color};
+  background-color: #9199a1;
+  border: solid 2px #212529;
+  font-size: 32px;
+  font-weight: bold;
+  border-bottom: 8px solid #212529;
+`;
+
 function Result() {
   return (
     <Wrapper>
@@ -176,6 +203,8 @@ function Result() {
           <h2>문제풀이가 궁금하신가요?</h2>
         </ExplanBtn>
       </GradeBox>
+      <Btn color="#4757ff">다시 도전!</Btn>
+      <Btn1 color="#fff">내 점수 공유하기</Btn1>
     </Wrapper>
   );
 }

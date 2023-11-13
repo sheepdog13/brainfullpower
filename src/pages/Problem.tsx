@@ -6,7 +6,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 import { scoreAtom } from "../atoms";
-import { couldStartTrivia } from "typescript";
+import Frame3 from "../images/Frame3.png";
+import Frame4 from "../images/Frame4.png";
+import Frame5 from "../images/Frame5.png";
 
 interface IProblem {
   answerDetail: string;
@@ -127,6 +129,10 @@ const Btn = styled.button`
     background-color: #212529;
   }
 `;
+const ProblemDesc = styled.div`
+  margin-top: 80px;
+  margin-bottom: 30px;
+`;
 
 function Problem() {
   const { id } = useParams();
@@ -135,9 +141,7 @@ function Problem() {
   const navigate = useNavigate();
   const [score, setScore] = useRecoilState(scoreAtom);
   const { data, isLoading } = useQuery<IProblem>(["problem", id], async () => {
-    const response = await fetch(
-      `https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app/v1/api/problems/${id}`
-    );
+    const response = await fetch(`/v1/api/problems/${id}`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -145,7 +149,6 @@ function Problem() {
     console.log(data);
     return data;
   });
-
   useEffect(() => {
     const interval = setInterval(() => {
       if (minutes === 60) return minutes;
@@ -183,7 +186,6 @@ function Problem() {
     isCorrect(e.currentTarget.value);
     navigateHandler();
   };
-
   return (
     <>
       {isLoading ? (
@@ -217,7 +219,8 @@ function Problem() {
               </LevelToggles>
             </LevelNav>
             <ContentBox>
-              <div>{data?.problem}</div>
+              <ProblemDesc>{data?.problem}</ProblemDesc>
+              {Number(id) >= 3 && <img src={Frame4} alt="aa" />}
             </ContentBox>
             <BtnBox>
               <Btn value={data?.choice1} onClick={BtnClickHandler}>
