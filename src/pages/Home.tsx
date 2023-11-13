@@ -83,6 +83,7 @@ const Btn = styled.button`
 
 function Home() {
   // 배포를 확인하기 위한 브랜치
+  // 개발할 브랜치
   const navigate = useNavigate();
   function handleClick() {
     navigate("/nick");
