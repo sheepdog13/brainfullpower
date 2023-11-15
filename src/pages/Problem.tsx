@@ -9,6 +9,7 @@ import { scoreAtom } from "../atoms";
 import Frame3 from "../images/Frame3.png";
 import Frame4 from "../images/Frame4.png";
 import Frame5 from "../images/Frame5.png";
+import Btn from "../components/Btn";
 
 interface IProblem {
   answerDetail: string;
@@ -27,7 +28,6 @@ interface IProblem {
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 814px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -108,27 +108,6 @@ const BtnBox = styled.div`
   margin-top: 16px;
 `;
 
-const Btn = styled.button`
-  position: relative;
-  width: 159.5px;
-  height: 90px;
-  border-radius: 12px;
-  background-color: #fff;
-  border: solid 2px #212529;
-  color: #212529;
-  font-size: 32px;
-  font-weight: bold;
-  div {
-    position: absolute;
-    top: 8px;
-    left: -2px;
-    z-index: -1;
-    border-radius: 12px;
-    width: 159.5px;
-    height: 90px;
-    background-color: #212529;
-  }
-`;
 const ProblemDesc = styled.div`
   margin-top: 80px;
   margin-bottom: 30px;
@@ -223,24 +202,42 @@ function Problem() {
               {Number(id) >= 3 && <img src={Frame4} alt="aa" />}
             </ContentBox>
             <BtnBox>
-              <Btn value={data?.choice1} onClick={BtnClickHandler}>
-                {data?.choice1}
-                <div></div>
-              </Btn>
-              <Btn value={data?.choice2} onClick={BtnClickHandler}>
-                {data?.choice2}
-                <div></div>
-              </Btn>
+              <Btn
+                text={data?.choice1 ?? "default"}
+                bgcolor="#fff"
+                color="#212529"
+                onClick={BtnClickHandler}
+                width="159.5px"
+                height="90px"
+              />
+              <Btn
+                text={data?.choice2 ?? "default"}
+                bgcolor="#fff"
+                color="#212529"
+                onClick={BtnClickHandler}
+                width="159.5px"
+                height="90px"
+              />
             </BtnBox>
             <BtnBox>
-              <Btn value={data?.choice3} onClick={BtnClickHandler}>
-                {data?.choice3}
-                <div></div>
-              </Btn>
-              <Btn value={data?.choice4} onClick={BtnClickHandler}>
-                {data?.choice4}
-                <div></div>
-              </Btn>
+              <Btn
+                text={data?.choice3 ?? "default"}
+                bgcolor="#fff"
+                color="#212529"
+                onClick={BtnClickHandler}
+                width="159.5px"
+                height="90px"
+                top="10px"
+              />
+              <Btn
+                text={data?.choice4 ?? "default"}
+                bgcolor="#fff"
+                color="#212529"
+                onClick={BtnClickHandler}
+                width="159.5px"
+                height="90px"
+                top="10px"
+              />
             </BtnBox>
           </Wrapper>
         </>

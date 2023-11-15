@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { ReactComponent as Brain } from "../images/brain.svg";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
+import Btn from "../components/Btn";
 
 const Wrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 814px;
   display: flex;
@@ -58,29 +60,6 @@ const Desc = styled.p`
   line-height: 150%;
 `;
 
-const Btn = styled.button`
-  position: relative;
-  width: 335px;
-  height: 74px;
-  margin-top: 127px;
-  border-radius: 12px;
-  background-color: #4757ff;
-  border: solid 2px #212529;
-  color: #ffffff;
-  font-size: 32px;
-  font-weight: bold;
-  div {
-    position: absolute;
-    top: 8px;
-    left: -2px;
-    z-index: -1;
-    border-radius: 12px;
-    width: 335px;
-    height: 74px;
-    background-color: #212529;
-  }
-`;
-
 function Home() {
   // 배포를 확인하기 위한 브랜치
   // 개발할 브랜치
@@ -104,10 +83,13 @@ function Home() {
         <br />
         나의 두뇌 레벨은 몇 Lv 일지 알아보자!
       </Desc>
-      <Btn onClick={handleClick}>
-        시작하기
-        <div></div>
-      </Btn>
+      <Btn
+        onClick={handleClick}
+        text="시작하기"
+        top="110px"
+        bgcolor="#4757FF"
+        color="#ffffff"
+      />
     </Wrapper>
   );
 }

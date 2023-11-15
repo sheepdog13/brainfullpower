@@ -76,14 +76,13 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family:'NanumSquareNeo-Variable', 'Noto Sans', sans-serif;
     color: #212529;
-    background-color: #12E382;
-    background-image:
+    background-color: #12e382;
+  background-image: linear-gradient(rgba(82, 82, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(82, 82, 255, 0.1) 1px, transparent 1px),
     linear-gradient(rgba(82, 82, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(82, 82, 255, 0.1)  1px, transparent 1px),
-    linear-gradient(rgba(82, 82, 255, 0.1)  1px, transparent 1px),
-    linear-gradient(90deg, rgba(82, 82, 255, 0.1)  1px, transparent 1px);
-    background-size: 20px 20px, 20px 20px, 20px 20px, 20px 20px; 
-    background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+    linear-gradient(90deg, rgba(82, 82, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
     }
   a {
     text-decoration: none;

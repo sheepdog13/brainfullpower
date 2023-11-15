@@ -4,8 +4,11 @@ import ResultLvBox from "../components/ResultLvBox";
 import ResultRank from "../components/ResultRank";
 import SvgIcon from "@mui/material/SvgIcon";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Btn from "../components/Btn";
 
 const Wrapper = styled.div`
+  position: relative;
+  z-index: -999;
   background-color: #4757ff;
   display: flex;
   flex-direction: column;
@@ -114,33 +117,6 @@ const ProblemResultColor = styled.div<{ isOk: boolean }>`
   }
 `;
 
-const Btn = styled.button`
-  position: relative;
-  width: 335px;
-  height: 82px;
-  border-radius: 12px;
-  margin-top: 36px;
-  color: ${(props) => props.color};
-  background-color: #fff;
-  border: solid 2px #212529;
-  font-size: 32px;
-  font-weight: bold;
-  border-bottom: 8px solid #212529;
-`;
-const Btn1 = styled.button`
-  position: relative;
-  width: 335px;
-  height: 82px;
-  border-radius: 12px;
-  margin-top: 36px;
-  color: ${(props) => props.color};
-  background-color: #9199a1;
-  border: solid 2px #212529;
-  font-size: 32px;
-  font-weight: bold;
-  border-bottom: 8px solid #212529;
-`;
-
 function Result() {
   return (
     <Wrapper>
@@ -203,8 +179,20 @@ function Result() {
           <h2>문제풀이가 궁금하신가요?</h2>
         </ExplanBtn>
       </GradeBox>
-      <Btn color="#4757ff">다시 도전!</Btn>
-      <Btn1 color="#fff">내 점수 공유하기</Btn1>
+      <Btn
+        top="36px"
+        color="#4757ff"
+        bgcolor="#fff"
+        text="다시 도전!"
+        onClick={() => {}}
+      />
+      <Btn
+        top="36px"
+        color="#fff"
+        bgcolor="#9199a1"
+        text="내 점수 공유하기"
+        onClick={() => {}}
+      />
     </Wrapper>
   );
 }
