@@ -1,26 +1,20 @@
+import React from "react";
 import styled from "styled-components";
 
 interface IBtnProps {
+  children?: React.ReactNode;
   width?: string;
   height?: string;
   top?: string;
-  bgcolor: string;
-  color: string;
-  text: string;
-  onClick?: any;
+  onClick?: (a: any) => void;
+  bgcolor?: string;
+  color?: string;
 }
 
-const BtnBox = styled.button<{
-  top: string;
-  bgcolor: string;
-  color: string;
-  width: string;
-  height: string;
-}>`
+const BtnBox = styled.button<IBtnProps>`
   position: relative;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-
   margin-top: ${(props) => props.top};
   border-radius: 12px;
   background-color: ${(props) => props.bgcolor};
@@ -40,17 +34,25 @@ const BtnBox = styled.button<{
   }
 `;
 
-function Btn(props: IBtnProps) {
+function Btn({
+  children,
+  width = "335px",
+  height = "74px",
+  color = "#FFFFFF",
+  bgcolor = "#4757FF",
+  top = "none",
+  onClick,
+}: IBtnProps) {
   return (
     <BtnBox
-      onClick={props.onClick}
-      color={props.color}
-      bgcolor={props.bgcolor}
-      width={props.width ?? "335px"}
-      height={props.height ?? "74px"}
-      top={props.top ?? "none"}
+      onClick={onClick}
+      color={color}
+      bgcolor={bgcolor}
+      width={width}
+      height={height}
+      top={top}
     >
-      {props.text}
+      {children}
       <div></div>
     </BtnBox>
   );

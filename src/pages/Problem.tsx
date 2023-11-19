@@ -161,8 +161,8 @@ function Problem() {
   };
 
   const BtnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e.currentTarget.value);
-    isCorrect(e.currentTarget.value);
+    console.log(e.currentTarget.innerText);
+    isCorrect(e.currentTarget.innerText);
     navigateHandler();
   };
   return (
