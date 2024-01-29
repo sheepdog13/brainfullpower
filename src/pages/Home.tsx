@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ReactComponent as Brain } from "../images/brain.svg";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
+// import { useQuery } from "react-query";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -99,7 +99,7 @@ function Home() {
         </SubTitleBox>
       </Main>
       <Desc>
-        {"<" + "두뇌풀가동" + ">" + "수학레벨 테스트를 통해"}
+        {/* {"<" + "두뇌풀가동" + ">" + "수학레벨 테스트를 통해"} */}
         <br />
         나의 두뇌 레벨은 몇 Lv 일지 알아보자!
       </Desc>

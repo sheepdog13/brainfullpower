@@ -6,9 +6,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 import { scoreAtom } from "../atoms";
-import Frame3 from "../images/Frame3.png";
+// import Frame3 from "../images/Frame3.png";
 import Frame4 from "../images/Frame4.png";
-import Frame5 from "../images/Frame5.png";
+// import Frame5 from "../images/Frame5.png";
 
 interface IProblem {
   answerDetail: string;
@@ -161,7 +161,7 @@ function Problem() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [seconds]);
+  }, [minutes, seconds]);
 
   const formatTime = (time: number) => (time < 10 ? `0${time}` : time);
 
