@@ -179,7 +179,7 @@ function CreateNickname() {
     try {
       //응답 성공
       const response = await axios.post(
-        `https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app/v1/api/members`,
+        `http://27.96.135.58:8080/v1/api/members`,
         data,
         {
           withCredentials: true,
