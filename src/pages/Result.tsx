@@ -3,8 +3,11 @@ import ResultLvBox from "../components/Result/ResultLvBox";
 import ResultRank from "../components/Result/ResultRank";
 import SvgIcon from "@mui/material/SvgIcon";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Button from "../components/common/Button";
 
 const Wrapper = styled.div`
+  position: absolute;
+  z-index: -999;
   background-color: #4757ff;
   display: flex;
   flex-direction: column;
@@ -44,7 +47,7 @@ const Title = styled.h1`
 const GradeBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 36px;
+  margin: 36px 0;
   border: 2px solid #212529;
   border-bottom: 8px solid #212529;
 `;
@@ -118,31 +121,10 @@ const ProblemResultColor = styled.div<{ $isOk: boolean }>`
   }
 `;
 
-const Btn = styled.button`
-  position: relative;
-  width: 335px;
-  height: 82px;
-  border-radius: 12px;
-  margin-top: 36px;
-  color: ${(props) => props.color};
-  background-color: #fff;
-  border: solid 2px #212529;
-  font-size: 32px;
-  font-weight: bold;
-  border-bottom: 8px solid #212529;
-`;
-const Btn1 = styled.button`
-  position: relative;
-  width: 335px;
-  height: 82px;
-  border-radius: 12px;
-  margin-top: 36px;
-  color: ${(props) => props.color};
-  background-color: #9199a1;
-  border: solid 2px #212529;
-  font-size: 32px;
-  font-weight: bold;
-  border-bottom: 8px solid #212529;
+const BtnBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 function Result() {
@@ -207,8 +189,10 @@ function Result() {
           <h2>문제풀이가 궁금하신가요?</h2>
         </ExplanBtn>
       </GradeBox>
-      <Btn color="#4757ff">다시 도전!</Btn>
-      <Btn1 color="#fff">내 점수 공유하기</Btn1>
+      <BtnBox>
+        <Button color="#4757ff" bgColor="#fff" text="다시 도전!" />
+        <Button color="#fff" bgColor="#9199a1" text="내 점수 공유하기" />
+      </BtnBox>
     </Wrapper>
   );
 }

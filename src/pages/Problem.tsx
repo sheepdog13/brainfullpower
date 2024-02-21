@@ -3,7 +3,7 @@ import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueries, useQuery } from "react-query";
+import { useQuery } from "react-query";
 // import data from "../data/problem1.json";
 
 interface IProblem {

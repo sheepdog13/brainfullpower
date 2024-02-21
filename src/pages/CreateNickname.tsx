@@ -7,6 +7,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import RefreshIcon from "@mui/icons-material/Refresh";
 // import { useMutation } from "react-query";
 import axios from "axios";
+import Button from "../components/common/Button";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -96,6 +97,7 @@ const ContextBox = styled.div`
   height: 300px;
   background-color: #ffd752;
   border: 2px solid #212529;
+  margin-bottom: 112px;
 `;
 
 const BrainBox = styled.div`
@@ -153,29 +155,6 @@ const PrivacyNotice = styled.p`
   margin-top: 12px;
   font-size: 14px;
   color: #495057;
-`;
-
-const Btn = styled.button`
-  position: relative;
-  width: 335px;
-  height: 74px;
-  margin-top: 99px;
-  border-radius: 12px;
-  background-color: #4757ff;
-  border: solid 2px #212529;
-  color: #ffffff;
-  font-size: 32px;
-  font-weight: bold;
-  div {
-    position: absolute;
-    top: 8px;
-    left: -2px;
-    z-index: -1;
-    border-radius: 12px;
-    width: 335px;
-    height: 74px;
-    background-color: #212529;
-  }
 `;
 
 function CreateNickname() {
@@ -275,9 +254,7 @@ function CreateNickname() {
         )}
         <PrivacyNotice>개인정보 보호를 위해 실명은 NO!</PrivacyNotice>
       </ContextBox>
-      <Btn type="submit" form="memberName">
-        다음<div></div>
-      </Btn>
+      <Button type="submit" form="memberName" text="다음" />
     </Wrapper>
   );
 }
