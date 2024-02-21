@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { ReactComponent as Brain } from "../images/brain.svg";
 import { useNavigate } from "react-router-dom";
 // import { useQuery } from "react-query";
 
@@ -13,6 +12,11 @@ const Wrapper = styled.div`
 
 const SvgBox = styled.div`
   filter: drop-shadow(0px 4px 0px rgb(0, 0, 0, 0.25));
+`;
+
+const Brain = styled.img`
+  width: 70px;
+  height: 70px;
 `;
 
 const Main = styled.div`
@@ -91,7 +95,10 @@ function Home() {
     <Wrapper>
       <Main>
         <SvgBox>
-          <Brain />
+          <Brain
+            src={`${process.env.PUBLIC_URL}/images/brain.webp`}
+            alt="두뇌"
+          />
         </SvgBox>
         <Title>두뇌 풀 가동</Title>
         <SubTitleBox>

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { ReactComponent as Brain } from "../images/brain.svg";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import SvgIcon from "@mui/material/SvgIcon";
@@ -114,6 +113,11 @@ const BrainBox = styled.div`
 
 const SvgBox = styled.div`
   filter: drop-shadow(0px 4px 0px rgb(0, 0, 0, 0.25));
+`;
+
+const Brain = styled.img`
+  width: 70px;
+  height: 70px;
 `;
 
 const NickNameDesc = styled.h2`
@@ -248,7 +252,10 @@ function CreateNickname() {
       <ContextBox>
         <BrainBox>
           <SvgBox>
-            <Brain />
+            <Brain
+              src={`${process.env.PUBLIC_URL}/images/brain.webp`}
+              alt="두뇌"
+            />
           </SvgBox>
         </BrainBox>
         <NickNameDesc>닉네임을 입력해주세요!</NickNameDesc>

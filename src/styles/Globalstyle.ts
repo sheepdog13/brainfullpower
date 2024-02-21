@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
-import NanumSquareNeo from "./fonts/NanumSquareNeo-bRg.ttf";
-import PartialSansKRRegular from "./fonts/PartialSansKR-Regular.otf";
+import NanumSquareNeo from "../fonts/NanumSquareNeo-bRg.ttf";
+import PartialSansKRRegular from "../fonts/PartialSansKR-Regular.otf";
 
 export const GlobalStyle = createGlobalStyle`
 @font-face {

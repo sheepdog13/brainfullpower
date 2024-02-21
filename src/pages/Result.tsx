@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { ReactComponent as Brain } from "../images/brain.svg";
-import ResultLvBox from "../components/ResultLvBox";
-import ResultRank from "../components/ResultRank";
+import ResultLvBox from "../components/Result/ResultLvBox";
+import ResultRank from "../components/Result/ResultRank";
 import SvgIcon from "@mui/material/SvgIcon";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
@@ -25,6 +24,11 @@ const BrainBox = styled.div`
   margin-top: 52px;
   background-color: #ff85de;
   border: 2px solid #212529;
+`;
+
+const Brain = styled.img`
+  width: 70px;
+  height: 70px;
 `;
 
 const Title = styled.h1`
@@ -103,10 +107,10 @@ const ProblemResult = styled.div`
   flex-direction: column;
   gap: 12px;
 `;
-const ProblemResultColor = styled.div<{ isOk: boolean }>`
+const ProblemResultColor = styled.div<{ $isOk: boolean }>`
   display: flex;
   flex-direction: row;
-  color: ${(props) => (props.isOk ? "#4757FF" : "#FF5F57")};
+  color: ${(props) => (props.$isOk ? "#4757FF" : "#FF5F57")};
   gap: 4px;
   p {
     margin-top: 0;
@@ -145,7 +149,7 @@ function Result() {
   return (
     <Wrapper>
       <BrainBox>
-        <Brain />
+        <Brain src={`${process.env.PUBLIC_URL}/images/brain.webp`} alt="두뇌" />
       </BrainBox>
       <Title>[닉네임일이삼]님의 수준은?</Title>
       <ResultLvBox />
@@ -171,23 +175,23 @@ function Result() {
               <p>중학교 1학년문제</p>
             </GradeProblem>
             <ProblemResult>
-              <ProblemResultColor isOk={true}>
+              <ProblemResultColor $isOk={true}>
                 <p>정답</p>
                 <p> O</p>
               </ProblemResultColor>
-              <ProblemResultColor isOk={true}>
+              <ProblemResultColor $isOk={true}>
                 <p>정답</p>
                 <p> O</p>
               </ProblemResultColor>
-              <ProblemResultColor isOk={true}>
+              <ProblemResultColor $isOk={true}>
                 <p>정답</p>
                 <p> O</p>
               </ProblemResultColor>
-              <ProblemResultColor isOk={false}>
+              <ProblemResultColor $isOk={false}>
                 <p>오답</p>
                 <p> X</p>
               </ProblemResultColor>
-              <ProblemResultColor isOk={false}>
+              <ProblemResultColor $isOk={false}>
                 <p>오답</p>
                 <p> X</p>
               </ProblemResultColor>

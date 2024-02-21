@@ -2,13 +2,9 @@ import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { useRecoilState } from "recoil";
-import { scoreAtom } from "../atoms";
-// import Frame3 from "../images/Frame3.png";
-import Frame4 from "../images/Frame4.png";
-// import Frame5 from "../images/Frame5.png";
+import { useNavigate } from "react-router-dom";
+import { useQueries, useQuery } from "react-query";
+// import data from "../data/problem1.json";
 
 interface IProblem {
   answerDetail: string;
@@ -66,22 +62,22 @@ const LevelToggles = styled.ul`
   margin-top: 13px;
 `;
 
-const LevelToggle = styled.li<{ isActive: boolean }>`
+const LevelToggle = styled.li<{ $isActive: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 56px;
   height: 26px;
-  background-color: ${(props) => (props.isActive ? "#fff" : "#c1c6cc")};
+  background-color: ${(props) => (props.$isActive ? "#fff" : "#c1c6cc")};
   border-radius: 12px 12px 0 0;
   border-width: 2px;
   border-style: solid;
   border-color: #212529;
-  color: ${(props) => (props.isActive ? "#4757ff" : "#495057")};
+  color: ${(props) => (props.$isActive ? "#4757ff" : "#495057")};
   font-size: 14px;
   margin-left: -2px;
-  border-bottom: ${(props) => props.isActive && "none"};
-  font-weight: ${(props) => props.isActive && "bold"};
+  border-bottom: ${(props) => props.$isActive && "none"};
+  font-weight: ${(props) => props.$isActive && "bold"};
 `;
 
 const ContentBox = styled.div`
@@ -135,21 +131,22 @@ const ProblemDesc = styled.div`
 `;
 
 function Problem() {
-  const { id } = useParams();
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const navigate = useNavigate();
-  const [score, setScore] = useRecoilState(scoreAtom);
-  const { data, isLoading } = useQuery<IProblem>(["problem", id], async () => {
-    const response = await fetch(
-      `http://27.96.135.58:8080/v1/api/problems/${id}`
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+  const [id, setId] = useState<number>(1);
+  const { data, isLoading } = useQuery<IProblem>(["problem"], async () => {
+    try {
+      const response = await fetch(
+        `http://27.96.135.58:8080/v1/api/problems/1`
+      );
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
     }
-    const data = await response.json();
-    console.log(data);
-    return data;
   });
   useEffect(() => {
     const interval = setInterval(() => {
@@ -167,86 +164,51 @@ function Problem() {
 
   const formatTime = (time: number) => (time < 10 ? `0${time}` : time);
 
-  const navigateHandler = () => {
-    if (Number(id) < 5) {
-      navigate(`/problem/${Number(id) + 1}`);
-    } else if (id === "5") {
-      navigate("/result");
-    }
-  };
-
-  const isCorrect = (chose: string) => {
-    if (chose === data?.answerSummary) {
-      setScore(score + Number(id));
-    } else {
-      return score;
-    }
-  };
-
   const BtnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log(e.currentTarget.value);
-    isCorrect(e.currentTarget.value);
-    navigateHandler();
   };
   return (
     <>
-      {isLoading ? (
-        <Wrapper>loading중</Wrapper>
-      ) : (
-        <>
-          <Wrapper>
-            <TimeBox>
-              <SvgIcon component={TimerIcon} sx={{ fontSize: 20 }} />
-              <TimerNum>
-                {formatTime(minutes)}:{formatTime(seconds)}
-              </TimerNum>
-            </TimeBox>
-            <LevelNav>
-              <LevelToggles>
-                <LevelToggle isActive={id === "1" ? true : false}>
-                  Lv.1
-                </LevelToggle>
-                <LevelToggle isActive={id === "2" ? true : false}>
-                  Lv.2
-                </LevelToggle>
-                <LevelToggle isActive={id === "3" ? true : false}>
-                  Lv.3
-                </LevelToggle>
-                <LevelToggle isActive={id === "4" ? true : false}>
-                  Lv.4
-                </LevelToggle>
-                <LevelToggle isActive={id === "5" ? true : false}>
-                  Lv.5
-                </LevelToggle>
-              </LevelToggles>
-            </LevelNav>
-            <ContentBox>
-              <ProblemDesc>{data?.problem}</ProblemDesc>
-              {Number(id) >= 3 && <img src={Frame4} alt="aa" />}
-            </ContentBox>
-            <BtnBox>
-              <Btn value={data?.choice1} onClick={BtnClickHandler}>
-                {data?.choice1}
-                <div></div>
-              </Btn>
-              <Btn value={data?.choice2} onClick={BtnClickHandler}>
-                {data?.choice2}
-                <div></div>
-              </Btn>
-            </BtnBox>
-            <BtnBox>
-              <Btn value={data?.choice3} onClick={BtnClickHandler}>
-                {data?.choice3}
-                <div></div>
-              </Btn>
-              <Btn value={data?.choice4} onClick={BtnClickHandler}>
-                {data?.choice4}
-                <div></div>
-              </Btn>
-            </BtnBox>
-          </Wrapper>
-        </>
-      )}
+      <Wrapper>
+        <TimeBox>
+          <SvgIcon component={TimerIcon} sx={{ fontSize: 20 }} />
+          <TimerNum>
+            {formatTime(minutes)}:{formatTime(seconds)}
+          </TimerNum>
+        </TimeBox>
+        <LevelNav>
+          <LevelToggles>
+            <LevelToggle $isActive={id === 1 ? true : false}>Lv.1</LevelToggle>
+            <LevelToggle $isActive={id === 2 ? true : false}>Lv.2</LevelToggle>
+            <LevelToggle $isActive={id === 3 ? true : false}>Lv.3</LevelToggle>
+            <LevelToggle $isActive={id === 4 ? true : false}>Lv.4</LevelToggle>
+            <LevelToggle $isActive={id === 5 ? true : false}>Lv.5</LevelToggle>
+          </LevelToggles>
+        </LevelNav>
+        <ContentBox>
+          <ProblemDesc>{data?.problem}</ProblemDesc>
+        </ContentBox>
+        <BtnBox>
+          <Btn onClick={BtnClickHandler}>
+            {data?.choice1}
+            <div></div>
+          </Btn>
+          <Btn onClick={BtnClickHandler}>
+            {data?.choice2}
+            <div></div>
+          </Btn>
+        </BtnBox>
+        <BtnBox>
+          <Btn onClick={BtnClickHandler}>
+            {data?.choice3}
+            <div></div>
+          </Btn>
+          <Btn onClick={BtnClickHandler}>
+            {data?.choice4}
+            <div></div>
+          </Btn>
+        </BtnBox>
+      </Wrapper>
     </>
   );
 }

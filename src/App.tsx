@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import CreateNickname from "./pages/CreateNickname";
 import Problem from "./pages/Problem";
 import Result from "./pages/Result";
-import { GlobalStyle } from "./Globalstyle";
+import { GlobalStyle } from "./styles/Globalstyle";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/nick" element={<CreateNickname />} />
-        <Route path="/problem/:id" element={<Problem />} />
+        <Route path="/problem" element={<Problem />} />
         <Route path="/result" element={<Result />} />
       </Routes>
     </>
