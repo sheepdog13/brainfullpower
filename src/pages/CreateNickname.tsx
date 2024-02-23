@@ -8,6 +8,12 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 // import { useMutation } from "react-query";
 import axios from "axios";
 import Button from "../components/common/Button";
+import { useRecoilState } from "recoil";
+import { userState } from "../atoms/userState";
+
+interface FormData {
+  memberName: string;
+}
 
 const Wrapper = styled.div`
   width: 100%;
@@ -158,7 +164,9 @@ const PrivacyNotice = styled.p`
 `;
 
 function CreateNickname() {
-  async function postData(data: any) {
+  const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userState);
+  async function postData(data: FormData) {
     try {
       //응답 성공
       const response = await axios.post(
@@ -168,33 +176,16 @@ function CreateNickname() {
           withCredentials: true,
         }
       );
+      setUser((prevUser) => ({
+        ...prevUser,
+        nickname: data.memberName,
+      }));
       console.log(response);
     } catch (error) {
       //응답 실패
       console.error(error);
     }
   }
-  // const postUserData = async (data: any) => {
-  //   const response = await fetch("https://port-0-brain-full-power-7lk2blookpwe8.sel5.cloudtype.app/v1/api/members"
-  //     ,
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(data),
-  //     }
-  //   );
-
-  //   if (!response.ok) {
-  //     console.log("안들어가짐");
-  //   }
-
-  //   return response.json();
-  // };
-  // const mutation = useMutation(postUserData);
-
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -202,12 +193,9 @@ function CreateNickname() {
     setValue,
   } = useForm();
   const onSubmit = (data: any) => {
-    const user = { ...data };
-    console.log(user);
-    postData(user);
-    // mutation.mutate(user);
+    postData(data);
     setValue("memberName", "");
-    navigate("/problem/1");
+    navigate("/problem");
   };
 
   return (

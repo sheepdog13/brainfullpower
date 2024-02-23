@@ -2,6 +2,10 @@ import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
+interface ResultRankProps {
+  nick: string;
+}
+
 const RankBox = styled.div`
   position: relative;
   display: flex;
@@ -73,7 +77,8 @@ const SvgBox = styled.div`
   }
 `;
 
-function ResultRank() {
+function ResultRank(props: ResultRankProps) {
+  const { nick } = props;
   return (
     <>
       <RankBox>
@@ -82,7 +87,7 @@ function ResultRank() {
         </RankTop>
         <RankDescBox>
           <p>
-            축하드려요! [닉네임일이삼]은 전세계에서
+            축하드려요! [{nick}]은 전세계에서
             <br />
             <span>122번째</span>로 수학을 잘합니다!
           </p>

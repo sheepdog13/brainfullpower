@@ -159,6 +159,7 @@ function Problem() {
     if (id === 4) {
       const { point, isCorrect } = checkAnswer(i);
       setUser((prevUser) => ({
+        ...prevUser,
         score: prevUser.score + point,
         time: { minutes, seconds },
         answers: [...prevUser.answers, { problemId: id, answer, isCorrect }],

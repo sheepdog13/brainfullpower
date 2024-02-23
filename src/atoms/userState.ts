@@ -7,6 +7,7 @@ export interface answer {
 }
 
 export interface User {
+  nickname: string;
   score: number;
   time: { minutes: number; seconds: number };
   answers: answer[];
@@ -14,6 +15,7 @@ export interface User {
 export const userState = atom<User>({
   key: "user",
   default: {
+    nickname: "",
     score: 0,
     time: { minutes: 0, seconds: 0 },
     answers: [],

@@ -6,6 +6,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Button from "../components/common/Button";
 import { useRecoilState } from "recoil";
 import { answer, userState } from "../atoms/userState";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -130,8 +131,8 @@ const BtnBox = styled.div`
 `;
 
 function Result() {
+  const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
-  console.log(user);
 
   const countWrongAnswers = (answerArray: answer[]) => {
     let count = 0;
@@ -150,14 +151,14 @@ function Result() {
       <BrainBox>
         <Brain src={`${process.env.PUBLIC_URL}/images/brain.webp`} alt="두뇌" />
       </BrainBox>
-      <Title>[닉네임일이삼]님의 수준은?</Title>
+      <Title>[{user.nickname}]님의 수준은?</Title>
       <ResultLvBox score={user.score} />
-      <ResultRank />
+      <ResultRank nick={user.nickname} />
       <GradeBox>
         <GradeDesc>
           <h2>성적표</h2>
           <p>
-            [닉네임일이삼]님은 초중등 수학문제를 <span>{WrongNum}</span>개
+            [{user.nickname}]님은 초중등 수학문제를 <span>{WrongNum}</span>개
             틀렸습니다&gt;.&lt;{" "}
           </p>
           <p>
@@ -197,7 +198,14 @@ function Result() {
         </ExplanBtn>
       </GradeBox>
       <BtnBox>
-        <Button color="#4757ff" bgColor="#fff" text="다시 도전!" />
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+          color="#4757ff"
+          bgColor="#fff"
+          text="다시 도전!"
+        />
         <Button color="#fff" bgColor="#9199a1" text="내 점수 공유하기" />
       </BtnBox>
     </Wrapper>
