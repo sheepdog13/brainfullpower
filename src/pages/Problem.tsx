@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { getProblems } from "../api/problem/getProblem";
-// import data from "../data/problem1.json";
+import { useRecoilState } from "recoil";
+import { User, userState } from "../atoms/userState";
+import Button from "../components/common/Button";
 
 interface IProblem {
   answerDetail: string;
@@ -87,7 +89,6 @@ const ContentBox = styled.div`
   align-items: center;
   width: 335px;
   height: 340px;
-  margin-bottom: 38px;
   padding: 20px;
   background-color: #fff;
   border: 2px solid #212529;
@@ -97,34 +98,12 @@ const ContentBox = styled.div`
 `;
 
 const BtnBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 335px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  margin-top: 16px;
+  margin-top: 53px;
 `;
 
-const Btn = styled.button`
-  position: relative;
-  width: 159.5px;
-  height: 90px;
-  border-radius: 12px;
-  background-color: #fff;
-  border: solid 2px #212529;
-  color: #212529;
-  font-size: 32px;
-  font-weight: bold;
-  div {
-    position: absolute;
-    top: 8px;
-    left: -2px;
-    z-index: -1;
-    border-radius: 12px;
-    width: 159.5px;
-    height: 90px;
-    background-color: #212529;
-  }
-`;
 const ProblemDesc = styled.div`
   margin-top: 80px;
   margin-bottom: 30px;
@@ -133,11 +112,6 @@ const ProblemDesc = styled.div`
 function Problem() {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
-  const [id, setId] = useState(0);
-
-  const { data, isLoading } = useQuery<IProblem[], Error>(["problems"], () =>
-    getProblems()
-  );
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -155,9 +129,21 @@ function Problem() {
 
   const formatTime = (time: number) => (time < 10 ? `0${time}` : time);
 
-  const BtnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [id, setId] = useState(0);
+
+  const { data, isLoading } = useQuery<IProblem[], Error>(["problems"], () =>
+    getProblems()
+  );
+
+  const [user, setUser] = useRecoilState<User>(userState);
+
+  const BtnClickHandler = (answer: string) => {
     if (id !== 4) {
       setId((pre) => pre + 1);
+      setUser((prevUser) => ({
+        ...prevUser,
+        answers: [...prevUser.answers, { problemId: id, answer }],
+      }));
     }
   };
   return (
@@ -196,24 +182,24 @@ function Problem() {
               <ProblemDesc>{data?.[id].problem}</ProblemDesc>
             </ContentBox>
             <BtnBox>
-              <Btn onClick={BtnClickHandler}>
-                {data?.[id].choice1}
-                <div></div>
-              </Btn>
-              <Btn onClick={BtnClickHandler}>
-                {data?.[id].choice2}
-                <div></div>
-              </Btn>
-            </BtnBox>
-            <BtnBox>
-              <Btn onClick={BtnClickHandler}>
-                {data?.[id].choice3}
-                <div></div>
-              </Btn>
-              <Btn onClick={BtnClickHandler}>
-                {data?.[id].choice4}
-                <div></div>
-              </Btn>
+              {[
+                data?.[id].choice1,
+                data?.[id].choice2,
+                data?.[id].choice3,
+                data?.[id].choice4,
+              ].map((choice, i) => (
+                <Button
+                  onClick={() => {
+                    BtnClickHandler(choice || "");
+                  }}
+                  key={i}
+                  text={choice || ""}
+                  width="159.5px"
+                  height="90px"
+                  color="#212529"
+                  bgColor="#fff"
+                />
+              ))}
             </BtnBox>
           </Wrapper>
         </>
