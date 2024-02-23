@@ -4,6 +4,8 @@ import ResultRank from "../components/Result/ResultRank";
 import SvgIcon from "@mui/material/SvgIcon";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Button from "../components/common/Button";
+import { useRecoilState } from "recoil";
+import { answer, userState } from "../atoms/userState";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -128,24 +130,43 @@ const BtnBox = styled.div`
 `;
 
 function Result() {
+  const [user, setUser] = useRecoilState(userState);
+  console.log(user);
+
+  const countWrongAnswers = (answerArray: answer[]) => {
+    let count = 0;
+    answerArray.forEach((answer: answer) => {
+      if (!answer.isCorrect) {
+        count++;
+      }
+    });
+    return count;
+  };
+
+  const WrongNum = countWrongAnswers(user.answers);
+
   return (
     <Wrapper>
       <BrainBox>
         <Brain src={`${process.env.PUBLIC_URL}/images/brain.webp`} alt="두뇌" />
       </BrainBox>
       <Title>[닉네임일이삼]님의 수준은?</Title>
-      <ResultLvBox />
+      <ResultLvBox score={user.score} />
       <ResultRank />
       <GradeBox>
         <GradeDesc>
           <h2>성적표</h2>
           <p>
-            [닉네임일이삼]님은 초중등 수학문제를 <span>1</span>개
+            [닉네임일이삼]님은 초중등 수학문제를 <span>{WrongNum}</span>개
             틀렸습니다&gt;.&lt;{" "}
           </p>
           <p>
             5문제 푸는데 총 걸린시간은
-            <br /> <span>60분 00초</span>입니다@.@
+            <br />{" "}
+            <span>
+              {user?.time.minutes}분 {user?.time.seconds}초
+            </span>
+            입니다@.@
           </p>
           <hr />
           <GradeResult>
@@ -157,26 +178,12 @@ function Result() {
               <p>중학교 1학년문제</p>
             </GradeProblem>
             <ProblemResult>
-              <ProblemResultColor $isOk={true}>
-                <p>정답</p>
-                <p> O</p>
-              </ProblemResultColor>
-              <ProblemResultColor $isOk={true}>
-                <p>정답</p>
-                <p> O</p>
-              </ProblemResultColor>
-              <ProblemResultColor $isOk={true}>
-                <p>정답</p>
-                <p> O</p>
-              </ProblemResultColor>
-              <ProblemResultColor $isOk={false}>
-                <p>오답</p>
-                <p> X</p>
-              </ProblemResultColor>
-              <ProblemResultColor $isOk={false}>
-                <p>오답</p>
-                <p> X</p>
-              </ProblemResultColor>
+              {user.answers.map((answer, i) => (
+                <ProblemResultColor key={i} $isOk={answer.isCorrect}>
+                  <p>{answer.isCorrect ? "정답" : "오답"}</p>
+                  <p>{answer.isCorrect ? " O" : " X"}</p>
+                </ProblemResultColor>
+              ))}
             </ProblemResult>
           </GradeResult>
         </GradeDesc>

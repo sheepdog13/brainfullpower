@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface answer {
+export interface answer {
   problemId: number;
   answer: string;
   isCorrect: boolean;

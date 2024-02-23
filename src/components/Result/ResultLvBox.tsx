@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useEffect } from "react";
+
+interface ResultBoxProps {
+  score: number;
+}
 
 const LvContBox = styled.div`
   display: flex;
@@ -101,7 +106,26 @@ const LvBotBox = styled.div`
   }
 `;
 
-function ResultLvBox() {
+function ResultLvBox(props: ResultBoxProps) {
+  const { score } = props;
+  const checkScore = () => {
+    if (score === 0) {
+      return { level: "초3", text: "무슨무슨 뇌" };
+    } else if (score === 1) {
+      return { level: "초4", text: "무슨무슨 뇌" };
+    } else if (score === 2) {
+      return { level: "초5", text: "아직은 팔팔한 뇌" };
+    } else if (score === 3) {
+      return { level: "초6", text: "무슨무슨 뇌" };
+    } else if (score === 4) {
+      return { level: "중1", text: "무슨무슨 뇌" };
+    } else if (score === 5) {
+      return { level: "중2", text: "무슨무슨 뇌" };
+    } else {
+      return { level: "", text: "" };
+    }
+  };
+  const { level, text } = checkScore();
   return (
     <>
       <LvContBox>
@@ -116,7 +140,7 @@ function ResultLvBox() {
         </LvContTopBox>
         <LvMidBox>
           <LvTitlBox>
-            <h1>Lv.초5</h1>
+            <h1>Lv. {level}</h1>
           </LvTitlBox>
           <EyesBox>
             <EyeOut />
@@ -124,7 +148,7 @@ function ResultLvBox() {
           </EyesBox>
         </LvMidBox>
         <LvBotBox>
-          <h2>예시:아직은 팔팔한 뇌</h2>
+          <h2>예시:{text}</h2>
         </LvBotBox>
       </LvContBox>
     </>
