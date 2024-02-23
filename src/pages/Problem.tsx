@@ -2,8 +2,8 @@ import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
+import { getProblems } from "../api/problem/getProblem";
 // import data from "../data/problem1.json";
 
 interface IProblem {
@@ -133,82 +133,91 @@ const ProblemDesc = styled.div`
 function Problem() {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
-  const navigate = useNavigate();
-  const [id, setId] = useState<number>(1);
-  const { data, isLoading } = useQuery<IProblem>(["problem"], async () => {
-    try {
-      const response = await fetch(
-        `http://27.96.135.58:8080/v1/api/problems/1`
-      );
-      console.log(response);
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (err) {
-      console.log(err);
-    }
-  });
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (minutes === 60) return minutes;
-      if (seconds === 59) {
-        setMinutes((prevMinutes) => prevMinutes + 1);
-        setSeconds(0);
-      } else {
-        setSeconds((prevSeconds) => prevSeconds + 1);
-      }
-    }, 1000);
+  const [id, setId] = useState(0);
 
-    return () => clearInterval(interval);
-  }, [minutes, seconds]);
+  const { data, isLoading } = useQuery<IProblem[], Error>(["problems"], () =>
+    getProblems()
+  );
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (minutes === 60) return minutes;
+  //     if (seconds === 59) {
+  //       setMinutes((prevMinutes) => prevMinutes + 1);
+  //       setSeconds(0);
+  //     } else {
+  //       setSeconds((prevSeconds) => prevSeconds + 1);
+  //     }
+  //   }, 1000);
+
+  //   return () => clearInterval(interval);
+  // }, [minutes, seconds]);
 
   const formatTime = (time: number) => (time < 10 ? `0${time}` : time);
 
   const BtnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e.currentTarget.value);
+    if (id !== 4) {
+      setId((pre) => pre + 1);
+    }
   };
   return (
     <>
-      <Wrapper>
-        <TimeBox>
-          <SvgIcon component={TimerIcon} sx={{ fontSize: 20 }} />
-          <TimerNum>
-            {formatTime(minutes)}:{formatTime(seconds)}
-          </TimerNum>
-        </TimeBox>
-        <LevelNav>
-          <LevelToggles>
-            <LevelToggle $isActive={id === 1 ? true : false}>Lv.1</LevelToggle>
-            <LevelToggle $isActive={id === 2 ? true : false}>Lv.2</LevelToggle>
-            <LevelToggle $isActive={id === 3 ? true : false}>Lv.3</LevelToggle>
-            <LevelToggle $isActive={id === 4 ? true : false}>Lv.4</LevelToggle>
-            <LevelToggle $isActive={id === 5 ? true : false}>Lv.5</LevelToggle>
-          </LevelToggles>
-        </LevelNav>
-        <ContentBox>
-          <ProblemDesc>{data?.problem}</ProblemDesc>
-        </ContentBox>
-        <BtnBox>
-          <Btn onClick={BtnClickHandler}>
-            {data?.choice1}
-            <div></div>
-          </Btn>
-          <Btn onClick={BtnClickHandler}>
-            {data?.choice2}
-            <div></div>
-          </Btn>
-        </BtnBox>
-        <BtnBox>
-          <Btn onClick={BtnClickHandler}>
-            {data?.choice3}
-            <div></div>
-          </Btn>
-          <Btn onClick={BtnClickHandler}>
-            {data?.choice4}
-            <div></div>
-          </Btn>
-        </BtnBox>
-      </Wrapper>
+      {isLoading ? (
+        <>isload</>
+      ) : (
+        <>
+          <Wrapper>
+            <TimeBox>
+              <SvgIcon component={TimerIcon} sx={{ fontSize: 20 }} />
+              <TimerNum>
+                {formatTime(minutes)}:{formatTime(seconds)}
+              </TimerNum>
+            </TimeBox>
+            <LevelNav>
+              <LevelToggles>
+                <LevelToggle $isActive={id === 0 ? true : false}>
+                  Lv.1
+                </LevelToggle>
+                <LevelToggle $isActive={id === 1 ? true : false}>
+                  Lv.2
+                </LevelToggle>
+                <LevelToggle $isActive={id === 2 ? true : false}>
+                  Lv.3
+                </LevelToggle>
+                <LevelToggle $isActive={id === 3 ? true : false}>
+                  Lv.4
+                </LevelToggle>
+                <LevelToggle $isActive={id === 4 ? true : false}>
+                  Lv.5
+                </LevelToggle>
+              </LevelToggles>
+            </LevelNav>
+            <ContentBox>
+              <ProblemDesc>{data?.[id].problem}</ProblemDesc>
+            </ContentBox>
+            <BtnBox>
+              <Btn onClick={BtnClickHandler}>
+                {data?.[id].choice1}
+                <div></div>
+              </Btn>
+              <Btn onClick={BtnClickHandler}>
+                {data?.[id].choice2}
+                <div></div>
+              </Btn>
+            </BtnBox>
+            <BtnBox>
+              <Btn onClick={BtnClickHandler}>
+                {data?.[id].choice3}
+                <div></div>
+              </Btn>
+              <Btn onClick={BtnClickHandler}>
+                {data?.[id].choice4}
+                <div></div>
+              </Btn>
+            </BtnBox>
+          </Wrapper>
+        </>
+      )}
     </>
   );
 }
