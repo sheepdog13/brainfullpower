@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getProblems } from "../api/problem/getProblem";
 import { useRecoilState } from "recoil";
 import { User, userState } from "../atoms/userState";
 import Button from "../components/common/Button";
+import { useNavigate } from "react-router-dom";
 
 interface IProblem {
   answerDetail: string;
@@ -110,22 +111,23 @@ const ProblemDesc = styled.div`
 `;
 
 function Problem() {
+  const navigate = useNavigate();
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (minutes === 60) return minutes;
-  //     if (seconds === 59) {
-  //       setMinutes((prevMinutes) => prevMinutes + 1);
-  //       setSeconds(0);
-  //     } else {
-  //       setSeconds((prevSeconds) => prevSeconds + 1);
-  //     }
-  //   }, 1000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (minutes === 60) return minutes;
+      if (seconds === 59) {
+        setMinutes((prevMinutes) => prevMinutes + 1);
+        setSeconds(0);
+      } else {
+        setSeconds((prevSeconds) => prevSeconds + 1);
+      }
+    }, 1000);
 
-  //   return () => clearInterval(interval);
-  // }, [minutes, seconds]);
+    return () => clearInterval(interval);
+  }, [minutes, seconds]);
 
   const formatTime = (time: number) => (time < 10 ? `0${time}` : time);
 
@@ -137,15 +139,34 @@ function Problem() {
 
   const [user, setUser] = useRecoilState<User>(userState);
 
-  const BtnClickHandler = (answer: string) => {
+  const checkAnswer = (i: number) => {
+    if (String(i + 1) === data?.[id].answerSummary) {
+      return { point: data?.[id].point, isCorrect: true };
+    }
+    return { point: 0, isCorrect: false };
+  };
+
+  const BtnClickHandler = (answer: string, i: number) => {
     if (id !== 4) {
       setId((pre) => pre + 1);
+      const { point, isCorrect } = checkAnswer(i);
       setUser((prevUser) => ({
         ...prevUser,
-        answers: [...prevUser.answers, { problemId: id, answer }],
+        score: prevUser.score + point,
+        answers: [...prevUser.answers, { problemId: id, answer, isCorrect }],
       }));
     }
+    if (id === 4) {
+      const { point, isCorrect } = checkAnswer(i);
+      setUser((prevUser) => ({
+        score: prevUser.score + point,
+        time: { minutes, seconds },
+        answers: [...prevUser.answers, { problemId: id, answer, isCorrect }],
+      }));
+      navigate("/result");
+    }
   };
+
   return (
     <>
       {isLoading ? (
@@ -190,7 +211,7 @@ function Problem() {
               ].map((choice, i) => (
                 <Button
                   onClick={() => {
-                    BtnClickHandler(choice || "");
+                    BtnClickHandler(choice || "", i);
                   }}
                   key={i}
                   text={choice || ""}
