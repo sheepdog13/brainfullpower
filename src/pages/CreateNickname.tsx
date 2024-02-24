@@ -10,6 +10,7 @@ import axios from "axios";
 import Button from "../components/common/Button";
 import { useRecoilState } from "recoil";
 import { userState } from "../atoms/userState";
+import { useMutation } from "react-query";
 
 interface FormData {
   memberName: string;
@@ -166,26 +167,29 @@ const PrivacyNotice = styled.p`
 function CreateNickname() {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
-  async function postData(data: FormData) {
-    try {
-      //응답 성공
-      const response = await axios.post(
-        `http://27.96.135.58:8080/v1/api/members`,
-        data,
-        {
-          withCredentials: true,
-        }
-      );
+  async function postfetchNickname(formData: FormData) {
+    //응답 성공
+    const { data } = await axios.post(
+      `http://27.96.135.58:8080/v1/api/members`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
+    return data;
+  }
+
+  const { mutate } = useMutation(postfetchNickname, {
+    onError: (error) => {
+      console.log("error", error);
+    },
+    onSuccess: (data) => {
       setUser((prevUser) => ({
         ...prevUser,
         nickname: data.memberName,
       }));
-      console.log(response);
-    } catch (error) {
-      //응답 실패
-      console.error(error);
-    }
-  }
+    },
+  });
   const {
     register,
     handleSubmit,
@@ -193,7 +197,7 @@ function CreateNickname() {
     setValue,
   } = useForm();
   const onSubmit = (data: any) => {
-    postData(data);
+    mutate(data);
     setValue("memberName", "");
     navigate("/problem");
   };
