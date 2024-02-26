@@ -9,6 +9,7 @@ import { User, userState } from "../atoms/userState";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { postAnswer } from "../api/problem/postAnswer";
+import { PutTime, timeData } from "../api/user/putTime";
 
 interface IProblem {
   answerDetail: string;
@@ -140,7 +141,18 @@ function Problem() {
 
   const [user, setUser] = useRecoilState<User>(userState);
 
-  const { mutate } = useMutation(postAnswer, {
+  // 정답 클릭시 answer api post 요청
+  const { mutate: mutateAnswer } = useMutation(postAnswer, {
+    onError: (error) => {
+      console.log("error", error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+
+  // 마지막 문제 클릭시 time api put 요청
+  const { mutate: mutateTime } = useMutation(PutTime, {
     onError: (error) => {
       console.log("error", error);
     },
@@ -152,7 +164,7 @@ function Problem() {
   const BtnClickHandler = (answer: string) => {
     if (id !== 4) {
       // answer post 넣기
-      mutate({
+      mutateAnswer({
         memberId: user.memberId,
         problemId: id + 1,
         selectedAnswer: answer,
@@ -160,10 +172,15 @@ function Problem() {
       setId((pre) => pre + 1);
     }
     if (id === 4) {
-      mutate({
+      mutateAnswer({
         memberId: user.memberId,
         problemId: id + 1,
         selectedAnswer: answer,
+      });
+      mutateTime({
+        memberId: user.memberId,
+        minutes: user.time.minutes,
+        seconds: user.time.seconds,
       });
       navigate("/result");
     }
