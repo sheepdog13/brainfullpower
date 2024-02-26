@@ -2,12 +2,13 @@ import styled from "styled-components";
 import SvgIcon from "@mui/material/SvgIcon";
 import TimerIcon from "@mui/icons-material/TimerOutlined";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getProblems } from "../api/problem/getProblem";
 import { useRecoilState } from "recoil";
 import { User, userState } from "../atoms/userState";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
+import { postAnswer } from "../api/problem/postAnswer";
 
 interface IProblem {
   answerDetail: string;
@@ -139,31 +140,31 @@ function Problem() {
 
   const [user, setUser] = useRecoilState<User>(userState);
 
-  const checkAnswer = (i: number) => {
-    if (String(i + 1) === data?.[id].answerSummary) {
-      return { point: data?.[id].point, isCorrect: true };
-    }
-    return { point: 0, isCorrect: false };
-  };
+  const { mutate } = useMutation(postAnswer, {
+    onError: (error) => {
+      console.log("error", error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
 
-  const BtnClickHandler = (answer: string, i: number) => {
+  const BtnClickHandler = (answer: string) => {
     if (id !== 4) {
+      // answer post 넣기
+      mutate({
+        memberId: user.memberId,
+        problemId: id + 1,
+        selectedAnswer: answer,
+      });
       setId((pre) => pre + 1);
-      const { point, isCorrect } = checkAnswer(i);
-      setUser((prevUser) => ({
-        ...prevUser,
-        score: prevUser.score + point,
-        answers: [...prevUser.answers, { problemId: id, answer, isCorrect }],
-      }));
     }
     if (id === 4) {
-      const { point, isCorrect } = checkAnswer(i);
-      setUser((prevUser) => ({
-        ...prevUser,
-        score: prevUser.score + point,
-        time: { minutes, seconds },
-        answers: [...prevUser.answers, { problemId: id, answer, isCorrect }],
-      }));
+      mutate({
+        memberId: user.memberId,
+        problemId: id + 1,
+        selectedAnswer: answer,
+      });
       navigate("/result");
     }
   };
@@ -212,7 +213,7 @@ function Problem() {
               ].map((choice, i) => (
                 <Button
                   onClick={() => {
-                    BtnClickHandler(choice || "", i);
+                    BtnClickHandler(choice || "");
                   }}
                   key={i}
                   text={choice || ""}

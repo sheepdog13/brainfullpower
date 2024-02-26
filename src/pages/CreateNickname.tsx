@@ -187,6 +187,7 @@ function CreateNickname() {
       setUser((prevUser) => ({
         ...prevUser,
         nickname: data.memberName,
+        memberId: data.memberId,
       }));
     },
   });
