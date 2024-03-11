@@ -1,12 +1,16 @@
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import ResultLvBox from "../components/Result/ResultLvBox";
 import ResultRank from "../components/Result/ResultRank";
 import SvgIcon from "@mui/material/SvgIcon";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Button from "../components/common/Button";
 import { useRecoilState } from "recoil";
-import { answer, userState } from "../atoms/userState";
+import { User, answer, userState } from "../atoms/userState";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getUser } from "../api/user/getUser";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -131,8 +135,17 @@ const BtnBox = styled.div`
 `;
 
 function Result() {
+  let { memberId } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+
+  const { data, isLoading } = useQuery<User, Error>(
+    ["user"],
+    () => getUser(Number(memberId)),
+    {
+      enabled: false,
+    }
+  );
 
   const countWrongAnswers = (answerArray: answer[]) => {
     let count = 0;
@@ -145,6 +158,37 @@ function Result() {
   };
 
   const WrongNum = countWrongAnswers(user.answers);
+
+  const { Kakao }: any = window;
+  useEffect(() => {
+    Kakao.cleanup();
+    Kakao.init(process.env.REACT_APP_KAKAO);
+  }, [Kakao]);
+
+  const share = (id: string) => {
+    Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title: "두뇌풀가동",
+        description: "내점수 공유하기",
+        imageUrl:
+          "https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
+        link: {
+          mobileWebUrl: `https://brainfullpower.vercel.app/result/${id}`,
+          webUrl: `https://brainfullpower.vercel.app/result/${id}`,
+        },
+      },
+      buttons: [
+        {
+          title: "웹으로 이동",
+          link: {
+            mobileWebUrl: `https://brainfullpower.vercel.app/result/${id}`,
+            webUrl: `https://brainfullpower.vercel.app/result/${id}`,
+          },
+        },
+      ],
+    });
+  };
 
   return (
     <Wrapper>
@@ -206,7 +250,14 @@ function Result() {
           bgColor="#fff"
           text="다시 도전!"
         />
-        <Button color="#fff" bgColor="#9199a1" text="내 점수 공유하기" />
+        <Button
+          onClick={() => {
+            share(memberId || "");
+          }}
+          color="#fff"
+          bgColor="#9199a1"
+          text="내 점수 공유하기"
+        />
       </BtnBox>
     </Wrapper>
   );

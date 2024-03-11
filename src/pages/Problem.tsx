@@ -182,7 +182,7 @@ function Problem() {
         minutes: user.time.minutes,
         seconds: user.time.seconds,
       });
-      navigate("/result");
+      navigate(`/result/${user.memberId}`);
     }
   };
 

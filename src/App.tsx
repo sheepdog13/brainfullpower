@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/nick" element={<CreateNickname />} />
         <Route path="/problem" element={<Problem />} />
-        <Route path="/result" element={<Result />} />
+        <Route path="/result/:memberId" element={<Result />} />
       </Routes>
     </>
   );
